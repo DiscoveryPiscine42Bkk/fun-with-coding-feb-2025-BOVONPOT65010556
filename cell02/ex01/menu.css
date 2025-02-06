@@ -1,47 +1,50 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: lightblue;
-}
-/* สไตล์ของเมนูหลัก */
-.menu {
+body {
     display: flex;
     justify-content: center;
-    background-color: #333;
-    padding: 10px 0;
+    height: 100vh;            
+    margin: 0;
+    background-color: #f4f4f4;
 }
-.menu-item {
-    position: relative;
-    list-style: none;
-    padding: 10px 20px;
+
+.dropbtn {
+    background-color: #3498db;
     color: white;
-    font-size: 18px;
+    padding: 20px;
+    font-size: 20px;
+    border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
-.menu-item:hover {
-    background-color: #555;
-}
-/* เมนูย่อย (Dropdown) */
+
 .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
     display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #444;
-    min-width: 150px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 }
-.dropdown li {
-    list-style: none;
-    padding: 10px;
-    color: white;
-    text-align: left;
-}
-.dropdown li:hover {
-    background-color: #666;
-}
-/* แสดงเมนูเมื่อ hover */
-.menu-item:hover .dropdown {
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
     display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #2980b9;
 }
