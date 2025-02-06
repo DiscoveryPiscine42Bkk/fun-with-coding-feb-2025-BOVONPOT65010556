@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+}
+.parallax {
+    height: 100vh;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+.section {
+    height: 50vh;
+    background: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+.bg1 {
+    background-image: url('https://i.insider.com/5b11680342e1cc7cef5f75e5?width=700');
+}
+.bg2 {
+    background-image: url('https://www.warriorpins.com/cdn/shop/products/giphy_7e0abeea-5346-44b8-9ed8-a4efbbce7c4a_300x.gif?v=1555028584');
+}
