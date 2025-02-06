@@ -73,6 +73,13 @@ h1 {
     align-items: center; 
 }
 
+.social-icons {
+    display: flex;
+    flex-direction: row; 
+    text-align: center;
+    justify-content: center;
+}
+
 .social-icon:hover {
     transform: scale(1.1);
 }
