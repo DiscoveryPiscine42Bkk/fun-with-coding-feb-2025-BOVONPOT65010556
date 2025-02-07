@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic calculator</title>
+
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: lightblue;
+        }
+
+        .calculate{
+            background-color: aliceblue;
+            padding: 30px;
+            border-radius: 50px;
+            text-align: center;
+        }
+
+        input, select, button{
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="calculate">
+        <input type="text" id="leftbox" placeholder="enter number">
+        <select id="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+            <option value="%">%</option>
+        </select>
+        <input type="text" id="rightbox" placeholder="enter number">
+        <button onclick="calculate()">Try me!</button>
+    </div>
+
+    <script>
+        function calculate(){
+            let leftbox = document.getElementById("leftbox").value.trim();
+            let rightbox = document.getElementById("rightbox").value.trim();
+            let operator = document.getElementById("operator").value;
+
+            if (!/^\d+$/.test(leftbox) || !/^\d+$/.test(rightbox)){
+                alert("Error :(");
+                console.log("Error :(");
+                return;
+            }
+
+            let num1 = parseInt(leftbox);
+            let num2 = parseInt(rightbox);
+
+            // ตรวจสอบค่าติดลบ (ถึงแม้ input type text จะไม่ยอมรับตัวเลขติดลบ)
+            if (num1 < 0 || num2 < 0) {
+                alert("Error :(");
+                console.log("Error :(");
+                return;
+            }
+
+            // ป้องกันการหารหรือหาค่าโมดูโลด้วยศูนย์
+            if ((operator === "/" || operator === "%") && num2 === 0) {
+                alert("It's over 9000!");
+                console.log("It's over 9000!");
+                return;
+            }
+
+            // คำนวณผลลัพธ์
+            let result;
+            switch (operator) {
+                case "+": result = num1 + num2; break;
+                case "-": result = num1 - num2; break;
+                case "*": result = num1 * num2; break;
+                case "/": result = num1 / num2; break;
+                case "%": result = num1 % num2; break;
+            }
+
+            // แสดงผลลัพธ์
+            alert("Result: " + result);
+            console.log("Result:", result);
+        }
+
+        // แสดง alert ทุก 30 วินาที
+        setInterval(() => {
+            alert("Please, use me...");
+        }, 30000);
+        
+    </script>
+    
+</body>
+</html>
