@@ -1,47 +1,68 @@
-$(document).ready(function() {
-    loadTodos();
+$(document).ready(function () {
+    function escapeHTML(str) { 
+        return $("<div>").text(str).html(); // ป้องกัน XSS
+    }
 
-    $("#newTodoBtn").click(function() {
-        let task = prompt("Enter a new TO DO:");
-        if (task && task.trim() !== "") {
-            addTodo(task.trim());
-            saveTodos();
+    function encodeBase64(str) {
+        return btoa(unescape(encodeURIComponent(str))); // Encode เป็น Base64
+    }
+
+    function decodeBase64(str) {
+        return decodeURIComponent(escape(atob(str))); // Decode กลับ
+    }
+
+    function loadTasks() {
+        let tasks = getCookies("tasks");
+        console.log("Loaded Cookie (Raw):", document.cookie); // Debug
+
+        if (tasks) {
+            tasks.split("|~|").reverse().forEach(task => { 
+                if (task) {
+                    let decodedTask = decodeBase64(task);
+                    console.log("Decoded Task:", decodedTask); // Debug
+                    $("#ft_list").prepend(
+                        $("<div>").addClass("task").text(decodedTask) 
+                    );
+                }
+            });
+        }
+    }
+
+    function saveTasks() {
+        let taskArray = [];
+        $(".task").each(function () {
+            let encodedTask = encodeBase64($(this).text());
+            console.log("Encoded Task:", encodedTask); // Debug
+            taskArray.push(encodedTask);
+        });
+
+        let finalCookie = "tasks=" + taskArray.join("|~|") + "; path=/";
+        document.cookie = finalCookie;
+        console.log("Saved Cookie:", finalCookie); // Debug
+    }
+
+    function getCookies(name) {
+        let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : "";
+    }
+
+    $("#newTask").on("click", function () {
+        let task = prompt("Enter a new task:");
+        if (task) {
+            let escapedTask = escapeHTML(task);
+            $("#ft_list").prepend(
+                $("<div>").addClass("task").text(escapedTask)
+            );
+            saveTasks();
         }
     });
 
-    function addTodo(text) {
-        let $todoDiv = $("<div>", {
-            "class": "todo",
-            "text": text
-        }).click(function() {
-            removeTodo($(this));
-        });
-
-        $("#ft_list").prepend($todoDiv);
-    }
-
-    function removeTodo($todo) {
-        if (confirm("Do you want to delete this TO DO?")) {
-            $todo.remove();
-            saveTodos();
+    $("#ft_list").on("click", ".task", function () {
+        if (confirm("Do you want to delete this task?")) {
+            $(this).remove();
+            saveTasks();
         }
-    }
+    });
 
-    function saveTodos() {
-        let todos = $(".todo").map(function() {
-            return $(this).text();
-        }).get();
-
-        document.cookie = "todos=" + encodeURIComponent(JSON.stringify(todos)) + "; path=/";
-    }
-
-    function loadTodos() {
-        let cookies = document.cookie.split("; ");
-        let todoCookie = cookies.find(row => row.startsWith("todos="));
-        
-        if (todoCookie) {
-            let todoList = JSON.parse(decodeURIComponent(todoCookie.split("=")[1]));
-            todoList.reverse().forEach(addTodo); 
-        }
-    }
+    loadTasks();
 });
