@@ -20,7 +20,7 @@ function addTodo(text) {
 }
 
 function removeTodo(todo) {
-    if (confirm("Do you really want to delete this TO DO?")) {
+    if (confirm("Do you want to delete this TO DO?")) {
         todo.remove();
         saveTodos();
     }
@@ -32,7 +32,8 @@ function saveTodos() {
         todos.push(todo.textContent);
     });
 
-    document.cookie = "todos=" + JSON.stringify(todos) + "; path=/";
+    let safeTodos = encodeURIComponent(JSON.stringify(todos));
+    document.cookie = "todos=" + safeTodos + "; path=/";
 }
 
 function loadTodos() {
@@ -40,7 +41,7 @@ function loadTodos() {
     let todoCookie = cookies.find(row => row.startsWith("todos="));
     
     if (todoCookie) {
-        let todoList = JSON.parse(todoCookie.split("=")[1]);
-        todoList.forEach(todo => addTodo(todo));
+        let todoList = JSON.parse(decodeURIComponent(todoCookie.split("=")[1]));
+        todoList.reverse().forEach(todo => addTodo(todo)); 
     }
-}
+}   
